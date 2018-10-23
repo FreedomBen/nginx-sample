@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-sample
+spec:
+  type: LoadBalancer
+  selector:
+    app: NginxSample
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-sample-deployment
+  labels:
+    app: NginxSample
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: NginxSample
+  template:
+    metadata:
+      labels:
+        app: NginxSample
+    spec:
+      containers:
+      - name: nginx-sample
+        image: freedomben/nginx-sample
+        ports:
+        - containerPort: 80
